@@ -99,6 +99,7 @@
         android:id="@+id/share_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="6dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="right|bottom"
         app:backgroundTint="@color/theme_accent"

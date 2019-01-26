@@ -54,6 +54,7 @@ public class ArticleDetailFragment extends Fragment implements
     private ImageView mPhotoView;
     private Toolbar mToolbar;
     private boolean mIsCard = false;
+    private LinearLayout mCardContainer;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -83,7 +84,6 @@ public class ArticleDetailFragment extends Fragment implements
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
-        mIsCard = getResources().getBoolean(R.bool.detail_is_card);
         setHasOptionsMenu(true);
     }
 
@@ -106,10 +106,6 @@ public class ArticleDetailFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
-        mScrollView = mRootView.findViewById(R.id.scrollView);
-        mPhotoView = mRootView.findViewById(R.id.photo);
-        mToolbar = mRootView.findViewById(R.id.app_toolbar);
-
         mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,6 +136,12 @@ public class ArticleDetailFragment extends Fragment implements
             return;
         }
 
+        mScrollView = mRootView.findViewById(R.id.scrollView);
+        mPhotoView = mRootView.findViewById(R.id.photo);
+        mToolbar = mRootView.findViewById(R.id.app_toolbar);
+
+        mIsCard = (mRootView.findViewById(R.id.card_container) != null);
+
         TextView titleView = mRootView.findViewById(R.id.article_title);
         TextView bylineView = mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
@@ -152,7 +154,9 @@ public class ArticleDetailFragment extends Fragment implements
             mRootView.setVisibility(View.VISIBLE);
             String title = mCursor.getString(ArticleLoader.Query.TITLE);
             titleView.setText(title);
-            mToolbar.setTitle(title);
+            if (!mIsCard) {
+                mToolbar.setTitle(title);
+            }
             mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
